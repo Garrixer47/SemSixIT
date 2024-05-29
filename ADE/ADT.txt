@@ -1,0 +1,32 @@
+CREATE TYPE prn_type AS (
+    registration_year CHAR(4),  -- Year part of the PRN (4 characters)
+    degree CHAR(3),  -- Degree part of the PRN (e.g., BTE for B. Tech, 3 characters)
+    branch CHAR(4),  -- Branch part of the PRN 
+    permanent_registration_number CHAR(8)  -- Permanent registration number (8 characters)
+);
+
+
+CREATE TABLE students (
+    student_id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    prn prn_type  -- Using the composite type as a column type
+);
+
+
+
+INSERT INTO students (name, prn)
+VALUES 
+    ('Aaditya Khot', ROW('2021', 'BTE', 'IT', '21610051')),
+    ('Tanish Gadvir', ROW('2021', 'BTE', 'ELN', '21310022')),
+    ('Shrenik Jadhav', ROW('2020', 'BTE', 'IT', '20610055')),
+    ('Tushar Jadhav', ROW('2019', 'BTE', 'CIV', '19110018')),
+    ('Aryan Magdum', ROW('2021', 'BTE', 'CSE', '21510070')),
+    ('Ashwin Madane', ROW('2020', 'BTE', 'MECH', '20210038'));
+
+
+SELECT
+    student_id,
+    name,
+    (prn).registration_year || (prn).degree || (prn).branch || (prn).permanent_registration_number AS prn_string
+FROM
+    students;
